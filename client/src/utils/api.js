@@ -11,9 +11,9 @@ const api = axios.create({
 });
 
 // Fetch all cases
-export const getCases = async () => {
+export const getCases = async (filters) => {
   try {
-    const response = await api.get('/cases');
+    const response = await api.get('/cases', { params: filters });
     return response.data;
   } catch (error) {
     console.error('Error fetching cases:', error);
@@ -33,7 +33,9 @@ export const getCaseDetails = async (caseId) => {
 };
 
 // Upload document for a case
-export const uploadDocument = async (caseId, formData) => {
+export const uploadDocument = async (caseId, file) => {
+  const formData = new FormData();
+  formData.append('file', file);
   try {
     const response = await api.post(`/cases/${caseId}/documents`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
@@ -106,4 +108,14 @@ export const getProfile = async () => {
 // API call to logout the user
 export const logoutUser = () => {
   localStorage.removeItem('token');  // Remove the token from localStorage
+};
+
+// API to search legal resources
+export const searchLegalResources = async (query) => {
+  try {
+    const response = await api.get('/resources/case-law', { params: { query } });
+    return response.data;
+  } catch (err) {
+    throw new Error('Error searching legal resources');
+  }
 };

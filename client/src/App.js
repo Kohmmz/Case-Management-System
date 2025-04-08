@@ -4,6 +4,7 @@ import { AuthProvider } from './contexts/AuthContext';  // Import the AuthProvid
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import CaseListPage from './pages/CaseListPage';
 import CaseDetailPage from './pages/CaseDetailPage';
+// import Login from './pages/Login'; // Removed unused import
 const App = () => {
   return (
     <AuthProvider>
