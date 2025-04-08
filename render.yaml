@@ -1,0 +1,10 @@
+services:
+  - name: Case-Management-System
+    type: web
+    env: python
+    buildCommand: ""
+    startCommand: gunicorn app:app
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        value: postgresql://case_management_system_db_user:fWG2H0ctA7mE0C9dwDRBfKocv6OKw2t0@dpg-cvqjh4ngi27c73emut6g-a.oregon-postgres.render.com/case_management_system_db
