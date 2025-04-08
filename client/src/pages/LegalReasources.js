@@ -1,42 +1,35 @@
-import React, { useState } from 'react';
-import { TextField, Button, Grid, Paper, Typography } from '@mui/material';
-import axios from 'axios';
+// client/src/components/resources/LegalResources.js
+import React, { useState, useEffect } from 'react';
+import { getCaseLaw } from '../../utils/api'; // Import API function
 
 const LegalResources = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [resources, setResources] = useState([]);
+  const [caseLaw, setCaseLaw] = useState([]);
 
-  // Handle search request
-  const handleSearch = () => {
-    if (searchQuery) {
-      axios.get(`/api/resources/case-law?search=${searchQuery}`)
-        .then(response => setResources(response.data))
-        .catch(error => console.error('Error fetching resources:', error));
-    }
-  };
+  useEffect(() => {
+    const fetchCaseLaw = async () => {
+      try {
+        const caseLawData = await getCaseLaw();  // Call the API to get case law
+        setCaseLaw(caseLawData);  // Update state with the case law data
+      } catch (error) {
+        console.error('Error fetching case law:', error);
+      }
+    };
+
+    fetchCaseLaw();
+  }, []);  // Empty array means this effect runs only once when the component mounts
 
   return (
     <div>
-      <TextField
-        label="Search Case Law"
-        variant="outlined"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        fullWidth
-        margin="normal"
-      />
-      <Button variant="contained" color="primary" onClick={handleSearch}>Search</Button>
-      
-      <Grid container spacing={2} marginTop={2}>
-        {resources.map((resource, index) => (
-          <Grid item xs={12} sm={6} key={index}>
-            <Paper elevation={3} padding={2}>
-              <Typography variant="h6">{resource.title}</Typography>
-              <Typography variant="body2">{resource.summary}</Typography>
-            </Paper>
-          </Grid>
-        ))}
-      </Grid>
+      <h2>Legal Resources - Case Law</h2>
+      <ul>
+        {caseLaw.length === 0 ? (
+          <p>No case law found.</p>
+        ) : (
+          caseLaw.map((law, index) => (
+            <li key={index}>{law.title}</li>
+          ))
+        )}
+      </ul>
     </div>
   );
 };

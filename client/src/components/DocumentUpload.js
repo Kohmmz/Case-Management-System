@@ -1,69 +1,49 @@
+// client/src/components/documents/DocumentUpload.js
 import React, { useState } from 'react';
-import { TextField, Button, CircularProgress } from '@mui/material';
-import axios from 'axios';
+import { uploadDocument } from '../../utils/api';
 
-const DocumentUpload = () => {
+const DocumentUpload = ({ caseId }) => {
   const [file, setFile] = useState(null);
-  const [fileName, setFileName] = useState('');
-  const [filePreview, setFilePreview] = useState(null);
-  const [uploading, setUploading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  // Handle file selection and preview
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      setFileName(selectedFile.name);
-
-      // If it's a PDF, show a preview
-      if (selectedFile.type === 'application/pdf') {
-        const fileReader = new FileReader();
-        fileReader.onload = function(event) {
-          setFilePreview(event.target.result);
-        };
-        fileReader.readAsDataURL(selectedFile);
-      }
-    }
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
   };
 
-  // Handle file upload
-  const handleUpload = () => {
-    if (!file) return;
-    setUploading(true);
-    
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!file) {
+      alert('Please select a file to upload.');
+      return;
+    }
+
     const formData = new FormData();
-    formData.append('file', file);
-    
-    axios.post('/api/cases/1/documents', formData) // Assuming case ID is 1
-      .then(response => {
-        setUploading(false);
-        alert('Document uploaded successfully');
-      })
-      .catch(error => {
-        console.error('Error uploading document:', error);
-        setUploading(false);
-      });
+    formData.append('document', file);
+
+    setLoading(true);
+
+    try {
+      await uploadDocument(caseId, formData);
+      alert('Document uploaded successfully!');
+      // Reload the documents list or refresh state as needed
+    } catch (error) {
+      console.error('Error uploading document:', error);
+      alert('Failed to upload document.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div>
-      <TextField
-        type="file"
-        onChange={handleFileChange}
-        variant="outlined"
-        fullWidth
-        margin="normal"
-      />
-      {file && <p>Selected File: {fileName}</p>}
-      {filePreview && <iframe src={filePreview} width="100%" height="400px" />}
-      <Button
-        onClick={handleUpload}
-        variant="contained"
-        color="primary"
-        disabled={uploading}
-      >
-        {uploading ? <CircularProgress size={24} /> : 'Upload Document'}
-      </Button>
+      <h3>Upload Document</h3>
+      <form onSubmit={handleSubmit}>
+        <input type="file" onChange={handleFileChange} />
+        <button type="submit" disabled={loading}>
+          {loading ? 'Uploading...' : 'Upload'}
+        </button>
+      </form>
     </div>
   );
 };

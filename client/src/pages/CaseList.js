@@ -1,68 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField } from '@mui/material';
+// client/src/components/cases/CaseList.js
+import React, { useState, useEffect } from 'react';
+import { getCases } from '../../utils/api';
+import { Link } from 'react-router-dom';
 
 const CaseList = () => {
   const [cases, setCases] = useState([]);
-  const [filters, setFilters] = useState({ status: '', caseType: '', date: '' });
 
-  // Fetch cases when filters or component mount
   useEffect(() => {
-    const fetchCases = () => {
-      let url = '/api/cases?';
-      if (filters.status) url += `status=${filters.status}&`;
-      if (filters.caseType) url += `case_type=${filters.caseType}&`;
-      if (filters.date) url += `date=${filters.date}`;
-
-      axios.get(url)
-        .then(response => setCases(response.data))
-        .catch(error => console.error('Error fetching cases:', error));
+    const fetchCases = async () => {
+      try {
+        const casesData = await getCases();
+        setCases(casesData);
+      } catch (error) {
+        console.error('Failed to fetch cases:', error);
+      }
     };
-
     fetchCases();
-  }, [filters]);
+  }, []);
 
   return (
     <div>
-      <TextField
-        label="Filter by Status"
-        value={filters.status}
-        onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-        fullWidth
-      />
-      <TextField
-        label="Filter by Case Type"
-        value={filters.caseType}
-        onChange={(e) => setFilters({ ...filters, caseType: e.target.value })}
-        fullWidth
-      />
-      <TextField
-        label="Filter by Date"
-        value={filters.date}
-        onChange={(e) => setFilters({ ...filters, date: e.target.value })}
-        fullWidth
-      />
-      
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Case ID</TableCell>
-              <TableCell>Case Name</TableCell>
-              <TableCell>Status</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {cases.map((caseItem) => (
-              <TableRow key={caseItem.id}>
-                <TableCell>{caseItem.case_id}</TableCell>
-                <TableCell>{caseItem.case_name}</TableCell>
-                <TableCell>{caseItem.case_status}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <h1>Your Cases</h1>
+      <ul>
+        {cases.length === 0 ? (
+          <p>No cases found.</p>
+        ) : (
+          cases.map((caseItem) => (
+            <li key={caseItem.case_id}>
+              <Link to={`/cases/${caseItem.case_id}`}>{caseItem.case_name}</Link>
+            </li>
+          ))
+        )}
+      </ul>
     </div>
   );
 };
