@@ -2,9 +2,15 @@ services:
   - name: Case-Management-System
     type: web
     env: python
-    buildCommand: ""
-    startCommand: gunicorn app:app
+    buildCommand: chmod +x build.sh && ./build.sh
+    startCommand: gunicorn wsgi:app
     autoDeploy: true
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.8.13
       - key: DATABASE_URL
         value: postgresql://case_management_system_db_user:fWG2H0ctA7mE0C9dwDRBfKocv6OKw2t0@dpg-cvqjh4ngi27c73emut6g-a.oregon-postgres.render.com/case_management_system_db
+      - key: FLASK_APP
+        value: wsgi.py
+      - key: FLASK_ENV
+        value: production
