@@ -16,15 +16,33 @@
     "axios": "^1.8.4",
     "date-fns": "^4.1.0",
     "formik": "^2.4.6",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-query": "^3.39.3",
     "react-router-dom": "^7.5.0",
     "vue": "^3.5.13",
     "yup": "^1.6.1"
   },
   "devDependencies": {
+<<<<<<< HEAD
     "@vitejs/plugin-vue": "^5.2.1",
     "vite": "^6.2.0"
   }
+=======
+    "eslint": "^9.24.0",
+    "prettier": "^3.5.3",
+    "vite": "^6.2.5",
+    "vite-plugin-eslint": "^1.8.1"
+  },
+  "name": "client",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+>>>>>>> a06788f6543f741fbbef12e68c6f0b0d2b46d916
 }
