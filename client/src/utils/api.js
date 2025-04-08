@@ -66,3 +66,44 @@ export const getCaseLaw = async () => {
     throw error;
   }
 };
+
+// API call to login the user
+export const loginUser = async (email, password) => {
+  try {
+    const response = await api.post('/login', { email, password });
+    localStorage.setItem('token', response.data.token);  // Save the token in localStorage
+    return response.data.user;  // Return the user data
+  } catch (error) {
+    throw new Error('Login failed');
+  }
+};
+
+// API call to register a new user
+export const registerUser = async (email, password, fullName) => {
+  try {
+    const response = await api.post('/register', { email, password, fullName });
+    localStorage.setItem('token', response.data.token);  // Save the token in localStorage
+    return response.data.user;  // Return the user data
+  } catch (error) {
+    throw new Error('Registration failed');
+  }
+};
+
+// API call to get the current user's profile
+export const getProfile = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error('No token found');
+    const response = await api.get('/profile', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to fetch profile');
+  }
+};
+
+// API call to logout the user
+export const logoutUser = () => {
+  localStorage.removeItem('token');  // Remove the token from localStorage
+};
