@@ -5,10 +5,11 @@ set -o errexit
 pip install --upgrade pip
 pip install pipenv
 
-# Install dependencies and lock file
-rm -f Pipfile.lock  # Remove existing lock file
-pipenv lock  # Generate new lock file
-pipenv install --deploy --system  # Install dependencies
+# Clean up any existing virtual environment
+pipenv --rm || true
+
+# Install dependencies
+pipenv install --deploy --system
 
 # Initialize flask-migrate
 export FLASK_APP=wsgi.py
