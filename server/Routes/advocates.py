@@ -3,7 +3,6 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 from sqlalchemy import insert, delete
 from Models import db, Advocate, Case, advocate_case_association
 
-
 advocates_bp = Blueprint('advocates', __name__)
 
 # GET route to list all advocates
