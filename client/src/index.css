@@ -1,0 +1,57 @@
+.app-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  button {
+    padding: 8px 16px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  .assign-container {
+    background: #f5f5f5;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .form-group select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+  }
+  
+  .advocate-card {
+    background: white;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .cases-section {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed #ddd;
+  }
