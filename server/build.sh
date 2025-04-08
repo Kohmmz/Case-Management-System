@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 set -o errexit
 
-# Install pipenv
+# Install pipenv and dependencies
 pip install pipenv
+pipenv install --system --deploy
 
-# Install dependencies
-pipenv install --python 3.8.13  # Update this version to match your local Python version
-
-# Run database migrations
-pipenv run flask db upgrade
+# Initialize flask-migrate
+export FLASK_APP=wsgi.py
+flask db init || true
+flask db migrate
+flask db upgrade
