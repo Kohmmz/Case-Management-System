@@ -15,8 +15,8 @@ python-dotenv = "*"
 psycopg2-binary = "*"
 reportlab = "*"
 sqlalchemy-serializer = "*"
-requests = "*"
 email-validator = "*"
+
 
 [dev-packages]
 faker = "*"
