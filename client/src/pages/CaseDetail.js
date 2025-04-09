@@ -8,7 +8,7 @@ import {
   getClientDetails
 } from '../../utils/api';
 import { generateCaseReport } from '../../utils/pdfGenerator';
-import DocumentUpload from '../components/DocumentUpload';
+import DocumentUpload from '../components/ui/DocumentUpload';
 import { Box, Button, Card, Typography, List, ListItem, ListItemText } from '@mui/material';
 
 const CaseDetail = () => {

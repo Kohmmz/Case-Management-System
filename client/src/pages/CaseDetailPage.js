@@ -1,7 +1,7 @@
 // client/src/pages/CaseDetailPage.js
 import React from 'react';
 import CaseDetail from '../components/cases/CaseDetail';
-import DocumentUpload from '../components/documents/DocumentUpload';
+import DocumentUpload from '../components/ui/DocumentUpload';
 
 const CaseDetailPage = ({ match }) => {
   const { caseId } = match.params;
