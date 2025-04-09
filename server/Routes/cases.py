@@ -1,5 +1,7 @@
 from flask import Blueprint, request, jsonify
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from Models.cases import Case, db
+from Models.advocates import Advocate
 from datetime import datetime, date
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
@@ -105,5 +107,33 @@ def get_case_types():
         return jsonify({'error': 'Database error', 'message': str(e)}), 500
 
 
-       
 
+def handle_error(e, message="Database error"):
+    db.session.rollback()
+    return jsonify({'error': message, 'details': str(e)}), 500
+
+# Basic CRUD Endpoints
+@cases_bp.route('/api/cases/<int:case_id>', methods=['GET', 'PUT', 'DELETE'])
+@jwt_required()
+def case_operations(case_id):
+    try:
+        case = Case.query.get_or_404(case_id)
+        
+        if request.method == 'GET':
+            return jsonify(case.to_dict())
+            
+        elif request.method == 'PUT':
+            data = request.json
+            for field in ['title', 'status', 'case_number']:
+                if field in data:
+                    setattr(case, field, data[field])
+            db.session.commit()
+            return jsonify(case.to_dict())
+            
+        elif request.method == 'DELETE':
+            db.session.delete(case)
+            db.session.commit()
+            return jsonify({'message': 'Case deleted'})
+            
+    except SQLAlchemyError as e:
+        return handle_error(e)
