@@ -28,7 +28,30 @@ def combine_search():
     })
     except Exception as e:
         return make_response(jsonify({"error": f"Error fetching data from CourtListener: {str(e)}"}), 500)
-        
+    
+    #--- 2. Open Library Search (Books)--
+    open_library_url = f"https://openlibrary.org/search.json?q={query}+law"
+
+    books_results = []
+    try:
+        ol_response = requests.get(open_library_url)
+        ol_data = ol_response.json()
+        for doc in ol_data.get("docs", []):
+            books_results.append({
+                "title": doc.get("title"),
+                "author": ','.join(doc.get("author_name", [])),
+                "year": doc.get("first_publish_year"),
+                "link": f"https://openlibrary.org{doc.get('key')}"
+            })
+    except Exception as e:
+        books_results.append({"error": f"Could not fetch OpenLibrary data: {str(e)}"})
+
+    return make_response(jsonify({
+        "query": query,
+        "cases": court_results,
+        "books": books_results
+    })), 200
+
     
 
 
