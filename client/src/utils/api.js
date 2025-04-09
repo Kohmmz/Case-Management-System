@@ -1,27 +1,63 @@
-// client/src/utils/api.js
 import axios from 'axios';
 
-// Define the base URL for your API (change if necessary)
 const BASE_URL = 'http://localhost:5000/api';
 
-// Create an Axios instance for easy API calls
 const api = axios.create({
   baseURL: BASE_URL,
   headers: { 'Content-Type': 'application/json' },
 });
 
-// Fetch all cases
-export const getCases = async (filters) => {
+// Case Management API
+export const getAllCases = async () => {
   try {
-    const response = await api.get('/cases', { params: filters });
+    const response = await api.get('/cases');
     return response.data;
   } catch (error) {
-    console.error('Error fetching cases:', error);
+    console.error('Error fetching all cases:', error);
     throw error;
   }
 };
 
-// Fetch a single case's details
+export const createCase = async (caseData) => {
+  try {
+    const response = await api.post('/cases', caseData);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating case:', error);
+    throw error;
+  }
+};
+
+export const getTodayCases = async () => {
+  try {
+    const response = await api.get('/cases/today');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching today\'s cases:', error);
+    throw error;
+  }
+};
+
+export const getUpcomingCases = async () => {
+  try {
+    const response = await api.get('/cases/upcoming');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching upcoming cases:', error);
+    throw error;
+  }
+};
+
+export const getCaseTypes = async () => {
+  try {
+    const response = await api.get('/cases/types');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching case types:', error);
+    throw error;
+  }
+};
+
 export const getCaseDetails = async (caseId) => {
   try {
     const response = await api.get(`/cases/${caseId}`);
@@ -32,7 +68,7 @@ export const getCaseDetails = async (caseId) => {
   }
 };
 
-// Upload document for a case
+// Document Management
 export const uploadDocument = async (caseId, file) => {
   const formData = new FormData();
   formData.append('file', file);
@@ -47,7 +83,6 @@ export const uploadDocument = async (caseId, file) => {
   }
 };
 
-// Fetch all documents for a specific case
 export const getDocuments = async (caseId) => {
   try {
     const response = await api.get(`/cases/${caseId}/documents`);
@@ -58,40 +93,27 @@ export const getDocuments = async (caseId) => {
   }
 };
 
-// Get case law from the legal resources
-export const getCaseLaw = async () => {
-  try {
-    const response = await api.get('/resources/case-law');
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching case law:', error);
-    throw error;
-  }
-};
-
-// API call to login the user
+// Auth API
 export const loginUser = async (email, password) => {
   try {
     const response = await api.post('/login', { email, password });
-    localStorage.setItem('token', response.data.token);  // Save the token in localStorage
-    return response.data.user;  // Return the user data
+    localStorage.setItem('token', response.data.token);
+    return response.data.user;
   } catch (error) {
     throw new Error('Login failed');
   }
 };
 
-// API call to register a new user
 export const registerUser = async (email, password, fullName) => {
   try {
     const response = await api.post('/register', { email, password, fullName });
-    localStorage.setItem('token', response.data.token);  // Save the token in localStorage
-    return response.data.user;  // Return the user data
+    localStorage.setItem('token', response.data.token);
+    return response.data.user;
   } catch (error) {
     throw new Error('Registration failed');
   }
 };
 
-// API call to get the current user's profile
 export const getProfile = async () => {
   try {
     const token = localStorage.getItem('token');
@@ -105,12 +127,21 @@ export const getProfile = async () => {
   }
 };
 
-// API call to logout the user
 export const logoutUser = () => {
-  localStorage.removeItem('token');  // Remove the token from localStorage
+  localStorage.removeItem('token');
 };
 
-// API to search legal resources
+// Legal Resources
+export const getCaseLaw = async () => {
+  try {
+    const response = await api.get('/resources/case-law');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching case law:', error);
+    throw error;
+  }
+};
+
 export const searchLegalResources = async (query) => {
   try {
     const response = await api.get('/resources/case-law', { params: { query } });
