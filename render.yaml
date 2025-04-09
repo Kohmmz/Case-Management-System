@@ -1,8 +1,8 @@
 services:
-  - name: Case-Management-System-6
+  - name: Case-Management-System-7
     type: web
     env: python
-    buildCommand: cd server && chmod +x build.sh && ./build.sh
+    buildCommand: chmod +x build.sh && ./build.sh
     startCommand: cd server && gunicorn wsgi:app
     autoDeploy: true
     envVars:
