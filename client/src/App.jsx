@@ -9,11 +9,12 @@ export default function App() {
     { id: 1, name: 'John Doe', email: 'john@law.com', phone: '555-1234' }
   ]);
   
-  const [cases, setCases] = useState([
+const [cases, setCases] = useState([
     { id: 1, title: 'Divorce Case #2456', status: 'Pending' },
     { id: 2, title: 'Property Dispute #1892', status: 'Active' },
-    { id: 3, title: 'Criminal Defense #3351', status: 'Closed' }
-  ]);
+    { id: 3, title: 'Criminal Defense #3351', status: 'Closed' },
+    { id: 4, title: 'Forgery Case #2789', status: 'Active' },
+]);
 
   const [assignments, setAssignments] = useState([]);
 
