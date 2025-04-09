@@ -112,7 +112,7 @@ def handle_error(e, message="Database error"):
     db.session.rollback()
     return jsonify({'error': message, 'details': str(e)}), 500
 
-# Basic CRUD Endpoints
+# by id
 @cases_bp.route('/api/cases/<int:case_id>', methods=['GET', 'PUT', 'DELETE'])
 @jwt_required()
 def case_operations(case_id):
