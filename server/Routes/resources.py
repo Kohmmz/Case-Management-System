@@ -28,9 +28,7 @@ def combine_search():
     })
     except Exception as e:
         return make_response(jsonify({"error": f"Error fetching data from CourtListener: {str(e)}"}), 500)
-    
-
-
+        
     
 
 
