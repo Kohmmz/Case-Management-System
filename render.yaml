@@ -1,5 +1,5 @@
 services:
-  - name: Case-Management-System
+  - name: Case-Management-System-6
     type: web
     env: python
     buildCommand: cd server && chmod +x build.sh && ./build.sh
