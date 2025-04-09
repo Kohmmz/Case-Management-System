@@ -1,7 +1,7 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify # type: ignore
 from Models.cases import Case, db
 from datetime import datetime, date
-from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError # type: ignore
 
 
 cases_bp = Blueprint('cases', __name__)
