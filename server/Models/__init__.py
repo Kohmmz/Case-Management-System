@@ -7,6 +7,11 @@ from flask_cors import CORS
 db = SQLAlchemy()
 migrate = Migrate()
 
+# Import and expose models at the package level
+from .advocates import Advocate, advocate_case_association
+from .cases import Case
+from .clients import Client
+
 def create_app():
     app = Flask(__name__)
 
@@ -18,10 +23,7 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
     CORS(app)  # Enable cross-origin requests
-    from Models.advocates import Advocate
-    from Models.cases import Case  # Placeholder for cases
-    from Models.clients import Client
-
+    
     # Register blueprints
     from Routes.advocates import advocates_bp
     from Routes.clients import clients_bp
