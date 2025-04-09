@@ -1,6 +1,5 @@
 from flask import request, jsonify, make_response,Blueprint
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-from Models import db
+from flask_jwt_extended import create_access_token
 from Models.advocates import Advocate 
 
 
