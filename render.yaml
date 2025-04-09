@@ -3,7 +3,7 @@ services:
     type: web
     env: python
     buildCommand: chmod +x build.sh && ./build.sh
-    startCommand: cd server && gunicorn wsgi:app
+    startCommand: gunicorn wsgi:app
     autoDeploy: true
     envVars:
       - key: PYTHON_VERSION
