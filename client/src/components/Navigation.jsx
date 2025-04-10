@@ -1,4 +1,12 @@
 import { NavLink, Outlet } from "react-router-dom";
+import {
+  HomeIcon,
+  UserGroupIcon,
+  BriefcaseIcon,
+  DocumentTextIcon,
+  AcademicCapIcon,
+  BookOpenIcon,
+} from "@heroicons/react/24/solid"; // Import Heroicons
 
 const Navigation = () => {
   return (
@@ -9,49 +17,67 @@ const Navigation = () => {
           <NavLink
             to="/dashboard"
             className={({ isActive }) =>
-              isActive ? "block py-1 text-blue-200 font-bold" : "block py-1"
+              isActive
+                ? "flex items-center py-2 px-3 bg-blue-700 rounded text-blue-200 font-bold"
+                : "flex items-center py-2 px-3 hover:bg-blue-500 rounded"
             }
           >
+            <HomeIcon className="w-5 h-5 mr-2" />
             Dashboard
           </NavLink>
           <NavLink
             to="/clients"
             className={({ isActive }) =>
-              isActive ? "block py-1 text-blue-200 font-bold" : "block py-1"
+              isActive
+                ? "flex items-center py-2 px-3 bg-blue-700 rounded text-blue-200 font-bold"
+                : "flex items-center py-2 px-3 hover:bg-blue-500 rounded"
             }
           >
+            <UserGroupIcon className="w-5 h-5 mr-2" />
             Clients
           </NavLink>
           <NavLink
             to="/cases"
             className={({ isActive }) =>
-              isActive ? "block py-1 text-blue-200 font-bold" : "block py-1"
+              isActive
+                ? "flex items-center py-2 px-3 bg-blue-700 rounded text-blue-200 font-bold"
+                : "flex items-center py-2 px-3 hover:bg-blue-500 rounded"
             }
           >
+            <BriefcaseIcon className="w-5 h-5 mr-2" />
             Cases
           </NavLink>
           <NavLink
             to="/documents"
             className={({ isActive }) =>
-              isActive ? "block py-1 text-blue-200 font-bold" : "block py-1"
+              isActive
+                ? "flex items-center py-2 px-3 bg-blue-700 rounded text-blue-200 font-bold"
+                : "flex items-center py-2 px-3 hover:bg-blue-500 rounded"
             }
           >
+            <DocumentTextIcon className="w-5 h-5 mr-2" />
             Documents
           </NavLink>
           <NavLink
             to="/advocates"
             className={({ isActive }) =>
-              isActive ? "block py-1 text-blue-200 font-bold" : "block py-1"
+              isActive
+                ? "flex items-center py-2 px-3 bg-blue-700 rounded text-blue-200 font-bold"
+                : "flex items-center py-2 px-3 hover:bg-blue-500 rounded"
             }
           >
+            <AcademicCapIcon className="w-5 h-5 mr-2" />
             Advocates
           </NavLink>
           <NavLink
             to="/resources/search"
             className={({ isActive }) =>
-              isActive ? "block py-1 text-blue-200 font-bold" : "block py-1"
+              isActive
+                ? "flex items-center py-2 px-3 bg-blue-700 rounded text-blue-200 font-bold"
+                : "flex items-center py-2 px-3 hover:bg-blue-500 rounded"
             }
           >
+            <BookOpenIcon className="w-5 h-5 mr-2" />
             Legal Resources
           </NavLink>
         </nav>
