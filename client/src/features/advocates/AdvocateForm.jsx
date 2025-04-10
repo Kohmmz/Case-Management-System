@@ -1,80 +1,75 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect } from "react";
 import axios from "../../utils/api";
 
-const ClientForm = () => {
+const AdvocateForm = () => {
   const { id } = useParams();
   const isEdit = Boolean(id);
   const navigate = useNavigate();
 
   const formik = useFormik({
-    initialValues: { name: "", email: "", phone: "", address: "" },
+    initialValues: {
+      name: "",
+      email: "",
+      bar_number: "",
+    },
     validationSchema: Yup.object({
       name: Yup.string().required("Name is required"),
       email: Yup.string().email("Invalid email").required("Email is required"),
-      phone: Yup.string().required("Phone is required"),
+      bar_number: Yup.string().required("Bar number is required"),
     }),
     onSubmit: async (values) => {
       if (isEdit) {
-        await axios.put(`/clients/${id}`, values);
+        await axios.put(`/advocates/${id}`, values);
       } else {
-        await axios.post("/clients", values);
+        await axios.post("/advocates", values);
       }
-      navigate("/clients");
+      navigate("/advocates");
     },
   });
 
   useEffect(() => {
     if (isEdit) {
-      axios.get(`/clients/${id}`).then((res) => {
-        formik.setValues(res.data);
-      });
+      axios.get(`/advocates/${id}`).then((res) => formik.setValues(res.data));
     }
   }, [id]);
 
   return (
     <div className="max-w-xl mx-auto">
       <h2 className="text-2xl font-semibold mb-4">
-        {isEdit ? "Edit Client" : "New Client"}
+        {isEdit ? "Edit Advocate" : "New Advocate"}
       </h2>
       <form onSubmit={formik.handleSubmit} className="space-y-4">
         <input
           name="name"
-          placeholder="Full Name"
+          placeholder="Advocate Name"
           value={formik.values.name}
           onChange={formik.handleChange}
           className="w-full border p-2 rounded"
         />
         <input
           name="email"
-          type="email"
           placeholder="Email"
+          type="email"
           value={formik.values.email}
           onChange={formik.handleChange}
           className="w-full border p-2 rounded"
         />
         <input
-          name="phone"
-          placeholder="Phone"
-          value={formik.values.phone}
-          onChange={formik.handleChange}
-          className="w-full border p-2 rounded"
-        />
-        <input
-          name="address"
-          placeholder="Address"
-          value={formik.values.address}
+          name="bar_number"
+          placeholder="Bar Number"
+          value={formik.values.bar_number}
           onChange={formik.handleChange}
           className="w-full border p-2 rounded"
         />
         <button type="submit" className="w-full bg-green-600 text-white py-2 rounded">
-          {isEdit ? "Update Client" : "Create Client"}
+          {isEdit ? "Update Advocate" : "Create Advocate"}
         </button>
       </form>
     </div>
   );
 };
 
-export default ClientForm;
+export default AdvocateForm;

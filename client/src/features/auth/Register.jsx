@@ -1,54 +1,58 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { useAuth } from "./AuthContext";
 
 const Register = () => {
-  const [form, setForm] = useState({
-    full_name: "",
-    email: "",
-    password: "",
+  const { register } = useAuth();
+
+  const formik = useFormik({
+    initialValues: { name: "", email: "", password: "", bar_number: "" },
+    validationSchema: Yup.object({
+      name: Yup.string().required("Required"),
+      email: Yup.string().email("Invalid email").required("Required"),
+      password: Yup.string().min(6, "Min 6 chars").required("Required"),
+      bar_number: Yup.string().required("Required"),
+    }),
+    onSubmit: register,
   });
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
-
-  const handleChange = (e) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post("/api/register", form);
-      navigate("/login");
-    } catch (err) {
-      setError("Registration failed. Try again.");
-    }
-  };
 
   return (
-    <div>
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="max-w-md mx-auto mt-20 p-6 border rounded-xl shadow-md bg-white">
+      <h2 className="text-2xl font-semibold mb-6 text-center">Register</h2>
+      <form onSubmit={formik.handleSubmit} className="space-y-4">
         <input
-          name="full_name"
-          placeholder="Full Name"
-          value={form.full_name}
-          onChange={handleChange}
+          name="name"
+          placeholder="Name"
+          onChange={formik.handleChange}
+          value={formik.values.name}
+          className="w-full border p-2 rounded"
         />
         <input
           name="email"
+          type="email"
           placeholder="Email"
-          value={form.email}
-          onChange={handleChange}
+          onChange={formik.handleChange}
+          value={formik.values.email}
+          className="w-full border p-2 rounded"
         />
         <input
           name="password"
           type="password"
           placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
+          onChange={formik.handleChange}
+          value={formik.values.password}
+          className="w-full border p-2 rounded"
         />
-        <button type="submit">Register</button>
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        <input
+          name="bar_number"
+          placeholder="Bar Number"
+          onChange={formik.handleChange}
+          value={formik.values.bar_number}
+          className="w-full border p-2 rounded"
+        />
+        <button type="submit" className="w-full bg-green-600 text-white py-2 rounded">
+          Register
+        </button>
       </form>
     </div>
   );

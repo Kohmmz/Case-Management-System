@@ -1,46 +1,42 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { useAuth } from "./AuthContext";
 
 const Login = () => {
   const { login } = useAuth();
-  const navigate = useNavigate();
-  const [form, setForm] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await login(form);
-      navigate("/dashboard");
-    } catch (err) {
-      setError("Invalid credentials. Please try again.");
-    }
-  };
+  const formik = useFormik({
+    initialValues: { email: "", password: "" },
+    validationSchema: Yup.object({
+      email: Yup.string().email("Invalid email").required("Required"),
+      password: Yup.string().required("Required"),
+    }),
+    onSubmit: login,
+  });
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="max-w-md mx-auto mt-20 p-6 border rounded-xl shadow-md bg-white">
+      <h2 className="text-2xl font-semibold mb-6 text-center">Login</h2>
+      <form onSubmit={formik.handleSubmit} className="space-y-4">
         <input
           name="email"
-          value={form.email}
-          onChange={handleChange}
+          type="email"
           placeholder="Email"
+          onChange={formik.handleChange}
+          value={formik.values.email}
+          className="w-full border p-2 rounded"
         />
         <input
           name="password"
           type="password"
-          value={form.password}
-          onChange={handleChange}
           placeholder="Password"
+          onChange={formik.handleChange}
+          value={formik.values.password}
+          className="w-full border p-2 rounded"
         />
-        <button type="submit">Login</button>
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded">
+          Login
+        </button>
       </form>
     </div>
   );

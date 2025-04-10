@@ -1,51 +1,64 @@
-import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../features/auth/AuthContext";
-import "../index.css";
+import { NavLink, Outlet } from "react-router-dom";
 
 const Navigation = () => {
-  const navigate = useNavigate();
-  const { logout } = useAuth();
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
-
-  const menuItems = [
-    { text: "Dashboard", icon: "📊", path: "/dashboard" },
-    { text: "Clients", icon: "👥", path: "/clients" },
-    { text: "Cases", icon: "📁", path: "/cases" },
-    { text: "Documents", icon: "📄", path: "/documents" },
-    { text: "Advocates", icon: "⚖️", path: "/advocates" },
-    { text: "Legal Resources", icon: "📚", path: "/resources" },
-    { text: "Profile", icon: "👤", path: "/profile" },
-  ];
-
   return (
-    <div className="drawer">
-      <div className="drawer-header">
-        <h1 className="drawer-title">⚖️ CaseFlow</h1>
-      </div>
-      <ul className="drawer-menu">
-        {menuItems.map((item) => (
-          <li key={item.text}>
-            <NavLink
-              to={item.path}
-              className="drawer-link"
-              activeClassName="active"
-            >
-              <span className="drawer-icon">{item.icon}</span>
-              {item.text}
-            </NavLink>
-          </li>
-        ))}
-      </ul>
-      <div className="drawer-footer">
-        <button className="logout-button" onClick={handleLogout}>
-          🚪 Logout
-        </button>
-      </div>
+    <div className="flex min-h-screen">
+      <aside className="w-60 bg-blue-600 text-white p-6">
+        <h2 className="text-xl font-bold mb-4">CaseFlow</h2>
+        <nav className="space-y-2">
+          <NavLink
+            to="/dashboard"
+            className={({ isActive }) =>
+              isActive ? "block py-1 text-blue-200 font-bold" : "block py-1"
+            }
+          >
+            Dashboard
+          </NavLink>
+          <NavLink
+            to="/clients"
+            className={({ isActive }) =>
+              isActive ? "block py-1 text-blue-200 font-bold" : "block py-1"
+            }
+          >
+            Clients
+          </NavLink>
+          <NavLink
+            to="/cases"
+            className={({ isActive }) =>
+              isActive ? "block py-1 text-blue-200 font-bold" : "block py-1"
+            }
+          >
+            Cases
+          </NavLink>
+          <NavLink
+            to="/documents"
+            className={({ isActive }) =>
+              isActive ? "block py-1 text-blue-200 font-bold" : "block py-1"
+            }
+          >
+            Documents
+          </NavLink>
+          <NavLink
+            to="/advocates"
+            className={({ isActive }) =>
+              isActive ? "block py-1 text-blue-200 font-bold" : "block py-1"
+            }
+          >
+            Advocates
+          </NavLink>
+          <NavLink
+            to="/resources/search"
+            className={({ isActive }) =>
+              isActive ? "block py-1 text-blue-200 font-bold" : "block py-1"
+            }
+          >
+            Legal Resources
+          </NavLink>
+        </nav>
+      </aside>
+      <main className="flex-1 bg-gray-50 p-6 overflow-auto">
+        <Outlet />
+      </main>
     </div>
   );
 };
