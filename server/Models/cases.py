@@ -1,8 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from .advocates import advocate_case_association, Advocate
 
-db = SQLAlchemy()
+# Use the same SQLAlchemy instance as in advocates.py
+from .advocates import db  
 
 class Case(db.Model):
     __tablename__ = 'cases'
@@ -19,11 +19,13 @@ class Case(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    # Many-to-many relationship with advocates
-    advocates = db.relationship('Advocate', 
-                              secondary=advocate_case_association,
-                              backref=db.backref('cases', lazy='dynamic'),
-                              lazy='dynamic')
+    # Remove backref since it's already defined in Advocate
+    advocates = db.relationship(
+        'Advocate',
+        secondary='advocate_case_association',  # Reference as string
+        back_populates='cases',
+        lazy='dynamic'  # Optional: Remove if you don't need dynamic loading
+    )
 
     def to_dict(self):
         return {

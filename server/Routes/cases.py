@@ -9,7 +9,7 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 cases_bp = Blueprint('cases', __name__)
 
 
-@cases_bp.route('/api/cases', methods=['GET'])
+@cases_bp.route('/cases', methods=['GET'])
 def get_all_cases():
     try:
         cases = Case.query.all()
@@ -27,7 +27,7 @@ def get_all_cases():
         return jsonify({'error': 'Database error', 'message': str(e)}), 500
 
 
-@cases_bp.route('/api/cases', methods=['POST'])
+@cases_bp.route('/cases', methods=['POST'])
 def create_case():
     try:
         data = request.json
@@ -68,7 +68,7 @@ def create_case():
         return jsonify({'error': 'Database error', 'message': str(e)}), 500
 
 
-@cases_bp.route('/api/cases/today', methods=['GET'])
+@cases_bp.route('/cases/today', methods=['GET'])
 def get_today_cases():
     try:
         today = date.today()
@@ -83,7 +83,7 @@ def get_today_cases():
         return jsonify({'error': 'Database error', 'message': str(e)}), 500
 
 
-@cases_bp.route('/api/cases/upcoming', methods=['GET'])
+@cases_bp.route('/cases/upcoming', methods=['GET'])
 def get_upcoming_cases():
     try:
         today = date.today()
@@ -98,7 +98,7 @@ def get_upcoming_cases():
         return jsonify({'error': 'Database error', 'message': str(e)}), 500
 
 
-@cases_bp.route('/api/cases/types', methods=['GET'])
+@cases_bp.route('/cases/types', methods=['GET'])
 def get_case_types():
     try:
         cases = Case.query.with_entities(Case.case_type).distinct().all()
@@ -113,7 +113,7 @@ def handle_error(e, message="Database error"):
     return jsonify({'error': message, 'details': str(e)}), 500
 
 # by id
-@cases_bp.route('/api/cases/<int:case_id>', methods=['GET', 'PUT', 'DELETE'])
+@cases_bp.route('/cases/<int:case_id>', methods=['GET', 'PUT', 'DELETE'])
 @jwt_required()
 def case_operations(case_id):
     try:

@@ -6,7 +6,7 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 clients_bp = Blueprint('clients', __name__)
 
 
-@clients_bp.route('/api/clients', methods=['GET'])
+@clients_bp.route('/clients', methods=['GET'])
 def get_all_clients():
     try:
         clients = Client.query.all()
@@ -21,7 +21,7 @@ def get_all_clients():
         return jsonify({'error': 'Database error', 'message': str(e)}), 500
 
 
-@clients_bp.route('/api/clients', methods=['POST'])
+@clients_bp.route('/clients', methods=['POST'])
 def create_client():
     try:
         data = request.json
@@ -77,7 +77,7 @@ def create_client():
         return jsonify({'error': 'Database error', 'message': str(e)}), 500
 
 
-@clients_bp.route('/api/clients/<int:id>', methods=['GET'])
+@clients_bp.route('/clients/<int:id>', methods=['GET'])
 def get_client(id):
     try:
         client = Client.query.get(id)
@@ -94,7 +94,7 @@ def get_client(id):
         return jsonify({'error': 'Database error', 'message': str(e)}), 500
 
 
-@clients_bp.route('/api/clients/<int:id>', methods=['PUT'])
+@clients_bp.route('/clients/<int:id>', methods=['PUT'])
 def update_client(id):
     try:
         client = Client.query.get(id)

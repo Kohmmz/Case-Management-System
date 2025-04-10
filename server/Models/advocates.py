@@ -30,7 +30,7 @@ class Advocate(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    cases = db.relationship('Case', secondary=advocate_case_association, backref=db.backref('advocates', lazy='dynamic'))
+    cases = db.relationship('Case', secondary=advocate_case_association, back_populates='advocates', lazy='dynamic')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

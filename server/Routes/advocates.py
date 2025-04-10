@@ -6,7 +6,7 @@ from Models import db, Advocate, Case, advocate_case_association
 advocates_bp = Blueprint('advocates', __name__)
 
 # GET route to list all advocates
-@advocates_bp.route('', methods=['GET', 'POST'])
+@advocates_bp.route('/advocates', methods=['GET', 'POST'])
 @jwt_required()
 def get_or_create_advocates():
     if request.method == 'GET':
