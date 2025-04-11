@@ -6,7 +6,7 @@ import {
   DocumentTextIcon,
   AcademicCapIcon,
   BookOpenIcon,
-} from "@heroicons/react/24/solid"; // Import Heroicons
+} from "@heroicons/react/24/outline"; // Import Heroicons
 
 const Navigation = () => {
   return (
