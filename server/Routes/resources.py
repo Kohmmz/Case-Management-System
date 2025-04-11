@@ -1,9 +1,9 @@
-from flask import Blueprint, request, jsonify,make_response
+from flask import Blueprint, request, jsonify, make_response
 import requests
 
-resources = Blueprint('resources', __name__)
+resources_bp = Blueprint('resources', __name__)  # Changed from 'resources' to 'resources_bp'
 
-@resources.route('/resources', methods=['GET'])
+@resources_bp.route('/resources', methods=['GET'])  # Update route decorator to use resources_bp
 #combine search
 def combine_search():
     query = request.args.get('query')
@@ -52,7 +52,7 @@ def combine_search():
         "books": books_results
     })), 200
 
-    
+
 
 
 

@@ -1,9 +1,7 @@
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
+# models/advocates.py
 from datetime import datetime
-from sqlalchemy.orm import relationship
-
-db = SQLAlchemy()
+from werkzeug.security import generate_password_hash, check_password_hash
+from . import db
 
 advocate_case_association = db.Table('advocate_case_association',
     db.Column('advocate_id', db.Integer, db.ForeignKey('advocates.id')),
@@ -14,6 +12,7 @@ advocate_case_association = db.Table('advocate_case_association',
 
 class Advocate(db.Model):
     __tablename__ = 'advocates'
+    # Rest of the model remains the same
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
