@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-db = SQLAlchemy()
+from Models import db
 
 class Document(db.Model):
     __tablename__ = 'documents'

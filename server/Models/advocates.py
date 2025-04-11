@@ -1,9 +1,6 @@
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-from sqlalchemy.orm import relationship
-
-db = SQLAlchemy()
+from werkzeug.security import generate_password_hash, check_password_hash
+from Models import db
 
 advocate_case_association = db.Table('advocate_case_association',
     db.Column('advocate_id', db.Integer, db.ForeignKey('advocates.id')),
@@ -25,7 +22,7 @@ class Advocate(db.Model):
     role = db.Column(db.String(50), default='advocate')
     specialization = db.Column(db.String(100))
     bar_number = db.Column(db.String(50), unique=True)
-    years_of_experience = db.Column(db.Integer)
+    
     active = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
