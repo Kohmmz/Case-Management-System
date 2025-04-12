@@ -6,7 +6,9 @@ from dotenv import load_dotenv
 import os
 from Models import db
 
-load_dotenv()  
+load_dotenv()
+
+
 
 migrate = Migrate()
 cors = CORS()
@@ -14,16 +16,19 @@ cors = CORS()
 def create_app():
     app = Flask(__name__)
 
+    
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
         'DATABASE_URL', 'sqlite:///casemanagement.db'
     )
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["SECRET_KEY"] = os.getenv('SECRET_KEY', 'dev_key')
 
+    
     db.init_app(app)
     migrate.init_app(app, db)
     cors.init_app(app)
 
+    
     from Routes.advocates import advocates_bp
     from Routes.cases import cases_bp
     from Routes.auth import auth_bp

@@ -41,5 +41,5 @@ class Document(db.Model):
             'updated_at': self.updated_at.isoformat() if self.updated_at else None
         }
     
-    def __repr__(self):
+    def _repr_(self):
         return f'<Document {self.title} (Case ID: {self.case_id})>'

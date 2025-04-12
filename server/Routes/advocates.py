@@ -4,6 +4,7 @@ from Models import db, Advocate, Case, advocate_case_association
 
 advocates_bp = Blueprint('advocates', __name__)
 
+
 @advocates_bp.route('/advocates', methods=['GET', 'POST'])
 def get_or_create_advocates():
     if request.method == 'GET':
@@ -38,7 +39,7 @@ def get_or_create_advocates():
             role=data.get('role', 'advocate'),
             specialization=data.get('specialization', ''),
             bar_number=data.get('bar_number', ''),
-            years_of_experience=data.get('years_of_experience', 0),
+    
             active=data.get('active', True)
         )
         advocate.set_password(data['password'])
