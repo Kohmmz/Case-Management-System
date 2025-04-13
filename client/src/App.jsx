@@ -15,7 +15,7 @@ import LegalSearch from './features/resources/LegalSearch';
 import AdvocateList from './features/advocates/AdvocateList';
 import AdvocateForm from './features/advocates/AdvocateForm';
 
-import PrivateRoute from "./routes/PrivateRoutes";
+import PrivateRoute from "./PrivateRoutes";
 import Navigation from './components/Navigation';
 
 const App = () => {
@@ -53,11 +53,11 @@ const App = () => {
             element={<ClientForm />}
           />
           <Route 
-            path="/clients/:id/cases" 
+            path="/clients" 
             element={<CaseList />}
           />
           <Route 
-            path="/clients/:id/cases/new" 
+            path="/clients/new" 
             element={<CaseForm />}
           />
           <Route 

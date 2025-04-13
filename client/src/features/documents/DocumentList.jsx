@@ -9,7 +9,7 @@ const DocumentList = () => {
 
   useEffect(() => {
     const fetchDocuments = async () => {
-      const res = await axios.get(`/docs/api/cases/${caseId}/documents`);
+      const res = await axios.get(`/docs/api/documents/${caseId}/documents`);
       setDocuments(res.data);
     };
     fetchDocuments();
@@ -35,7 +35,7 @@ const DocumentList = () => {
           <tbody>
             {documents.map((doc) => (
               <tr key={doc.id} className="border-t hover:bg-gray-50">
-                <td className="p-3">{doc.filename}</td>
+                <td className="p-3">{doc.original_file}</td>
                 <td className="p-3">{new Date(doc.created_at).toLocaleDateString()}</td>
                 <td className="p-3 text-center">
                   <button

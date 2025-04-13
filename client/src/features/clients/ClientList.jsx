@@ -7,7 +7,7 @@ const ClientList = () => {
 
   useEffect(() => {
     const fetchClients = async () => {
-      const res = await axios.get("/clients");
+      const res = await axios.get("clients/clients");
       setClients(res.data);
     };
     fetchClients();
