@@ -3,19 +3,20 @@ import { useParams } from "react-router-dom";
 import axios from "../../utils/api";
 
 const DocumentList = () => {
-  const { caseId } = useParams();
+  const { id, caseId } = useParams();
+  console.log("Params:", { id, caseId });
   const [documents, setDocuments] = useState([]);
 
   useEffect(() => {
     const fetchDocuments = async () => {
-      const res = await axios.get(`/cases/${caseId}/documents`);
+      const res = await axios.get(`/docs/api/cases/${caseId}/documents`);
       setDocuments(res.data);
     };
     fetchDocuments();
   }, [caseId]);
 
   const handleDelete = async (docId) => {
-    await axios.delete(`/documents/${docId}`);
+    await axios.delete(`/docs/api/documents/${docId}`);
     setDocuments(documents.filter((doc) => doc.id !== docId));
   };
 
