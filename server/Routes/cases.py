@@ -9,7 +9,7 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 cases_bp = Blueprint('cases', __name__)
 
 
-@cases_bp.route('/api/cases', methods=['GET'])
+@cases_bp.route('/cases', methods=['GET'])
 def get_all_cases():
     try:
         cases = Case.query.all()
