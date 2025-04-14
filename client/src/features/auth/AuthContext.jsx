@@ -18,28 +18,50 @@ export const AuthProvider = ({ children }) => {
   }, [token]);
 
   const login = async (formData) => {
-  try {
-    const res = await axios.post("/auth/login", formData);
-    setUser(res.data.user);
-    setToken(res.data.access_token);
-    localStorage.setItem("user", JSON.stringify(res.data.user));
-    localStorage.setItem("token", res.data.access_token);
-    navigate("/dashboard");
-  } catch (error) {
-    console.error("Login failed:", error.response?.data?.message || error.message);
-    alert("Login failed: " + (error.response?.data?.message || "Please try again."));
-  }
-};
+    try {
+      const res = await axios.post("/auth/login", formData);
+      if (res.data.success) {
+        const userData = res.data.advocate;
+        setUser(userData);
+        setToken(res.data.access_token);
+        localStorage.setItem("user", JSON.stringify(userData));
+        localStorage.setItem("token", res.data.access_token);
+        navigate("/dashboard");
+      } else {
+        alert("Login failed: " + res.data.message);
+      }
+    } catch (error) {
+      console.error("Login failed:", error.response?.data?.message || error.message);
+      alert("Login failed: " + (error.response?.data?.message || "Please try again."));
+    }
+  };
 
-const register = async (formData) => {
-  try {
-    await axios.post("/auth/register", formData);
-    navigate("/login");
-  } catch (error) {
-    console.error("Registration failed:", error.response?.data?.message || error.message);
-    alert("Registration failed: " + (error.response?.data?.message || "Please try again."));
-  }
-};
+  const register = async (formData) => {
+    try {
+      // Transform frontend form data to match backend expectations
+      const registrationData = {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+        first_name: formData.first_name,
+        last_name: formData.last_name,
+        bar_number: formData.bar_number,
+        phone: formData.phone || "",
+        specialization: formData.specialization || ""
+      };
+      
+      const res = await axios.post("/auth/register", registrationData);
+      if (res.data.success) {
+        alert("Registration successful! Please login.");
+        navigate("/login");
+      } else {
+        alert("Registration failed: " + res.data.message);
+      }
+    } catch (error) {
+      console.error("Registration failed:", error.response?.data?.message || error.message);
+      alert("Registration failed: " + (error.response?.data?.message || "Please try again."));
+    }
+  };
 
   const logout = () => {
     setUser(null);
@@ -49,8 +71,57 @@ const register = async (formData) => {
     navigate("/login");
   };
 
+  const updateProfile = async (formData) => {
+    try {
+      const res = await axios.put("/auth/profile", formData);
+      if (res.data.success) {
+        const updatedUser = res.data.advocate;
+        setUser(updatedUser);
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+        alert("Profile updated successfully!");
+        return true;
+      } else {
+        alert("Profile update failed: " + res.data.message);
+        return false;
+      }
+    } catch (error) {
+      console.error("Profile update failed:", error.response?.data?.message || error.message);
+      alert("Profile update failed: " + (error.response?.data?.message || "Please try again."));
+      return false;
+    }
+  };
+
+  const checkAuthStatus = async () => {
+    if (!token) return false;
+    
+    try {
+      const res = await axios.get("/auth/profile");
+      if (res.data.success) {
+        setUser(res.data.advocate);
+        localStorage.setItem("user", JSON.stringify(res.data.advocate));
+        return true;
+      } else {
+        logout();
+        return false;
+      }
+    } catch (error) {
+      console.error("Auth verification failed:", error);
+      logout();
+      return false;
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, token, login, register, logout }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      token, 
+      login, 
+      register, 
+      logout, 
+      updateProfile,
+      checkAuthStatus,
+      isAuthenticated: !!token
+    }}>
       {children}
     </AuthContext.Provider>
   );

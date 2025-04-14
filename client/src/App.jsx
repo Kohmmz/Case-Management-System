@@ -24,88 +24,75 @@ const App = () => {
       <Navigation />
       <div className="w-full p-4">
         <Routes> 
-          {/* wrap any paths that need authentication with PrivateRoute e.g 
-          <Route path="/" element={<PrivateRoute><Login /></PrivateRoute} 
-          remove the PrivateRoute in order to access all routes without having logged in.
-          ALL ROUTES ACTUALLY NEED THE PRIVATEROUTE*/}
+          {/* Public routes */}
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/auth/register" element={<Register />} />
 
+          {/* Protected routes */}
           <Route
             path="/dashboard"
-            element={<Dashboard />}
+            element={<PrivateRoute><Dashboard /></PrivateRoute>}
           />
           <Route
             path="/clients"
-            element={<ClientList />}
+            element={<PrivateRoute><ClientList /></PrivateRoute>}
           />
           <Route 
             path="/clients/:id" 
-            element={<ClientDetail />}
+            element={<PrivateRoute><ClientDetail /></PrivateRoute>}
           />
           <Route 
             path="/clients/:id/edit" 
-            element={<ClientForm />}
+            element={<PrivateRoute><ClientForm /></PrivateRoute>}
           />
           <Route 
             path="/clients/new" 
-            element={<ClientForm />}
+            element={<PrivateRoute><ClientForm /></PrivateRoute>}
           />
           <Route 
-            path="/clients" 
-            element={<CaseList />}
+            path="/cases" 
+            element={<PrivateRoute><CaseList /></PrivateRoute>}
           />
           <Route 
-            path="/clients/new" 
-            element={<CaseForm />}
+            path="/cases/new" 
+            element={<PrivateRoute><CaseForm /></PrivateRoute>}
           />
           <Route 
             path="/clients/:id/cases/:caseId/documents" 
-            element={<DocumentList />}
+            element={<PrivateRoute><DocumentList /></PrivateRoute>}
           />
           <Route 
             path="/clients/:id/cases/:caseId/documents/upload" 
-            element={<DocumentUpload />}
+            element={<PrivateRoute><DocumentUpload /></PrivateRoute>}
           />
           <Route 
             path="/advocates/new" 
-            element={<AdvocateForm />}
+            element={<PrivateRoute><AdvocateForm /></PrivateRoute>}
           />
           <Route 
             path="/advocates/:id/edit" 
-            element={<AdvocateForm />}
+            element={<PrivateRoute><AdvocateForm /></PrivateRoute>}
           />
           <Route 
             path="/advocates/:id" 
-            element={<AdvocateForm />}
+            element={<PrivateRoute><AdvocateForm /></PrivateRoute>}
           />
           <Route 
             path="/advocates" 
-            element={<AdvocateList />}
+            element={<PrivateRoute><AdvocateList /></PrivateRoute>}
           />
           <Route 
             path="/advocates/:id/cases" 
-            element={<CaseList />}
+            element={<PrivateRoute><CaseList /></PrivateRoute>}
           />
-          <Route
-            path="/cases"
-            element={<CaseList />}
-          />
-          <Route path="/cases/new" element={<CaseForm />} />
-          
           <Route
             path="/documents"
-            element={<DocumentList />}
+            element={<PrivateRoute><DocumentList /></PrivateRoute>}
           />
-
           <Route
             path="/resources/search"
-            element={<LegalSearch />}
-          />
-          <Route
-            path="/advocates"
-            element={<AdvocateList />}
+            element={<PrivateRoute><LegalSearch /></PrivateRoute>}
           />
         </Routes>
       </div>
