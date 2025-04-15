@@ -19,12 +19,12 @@ class Case(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    # Remove backref since it's already defined in Advocate
+    
     advocates = db.relationship(
         'Advocate',
-        secondary='advocate_case_association',  # Reference as string
+        secondary='advocate_case_association',
         back_populates='cases',
-        lazy='dynamic'  # Optional: Remove if you don't need dynamic loading
+        lazy='dynamic'  
     )
 
     def to_dict(self):
