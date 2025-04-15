@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
-# Use the same SQLAlchemy instance as in advocates.py
+# Use the same SQLAlchemy instance as in advocates.py, no need to create the instance again
 from .advocates import db  
 
 class Case(db.Model):
