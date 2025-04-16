@@ -1,18 +1,14 @@
 import axios from "axios";
 
-const BASE_URL = "http://127.0.0.1:5000/";
-
 const api = axios.create({
-  baseURL: BASE_URL,
+  baseURL: '/', // Relative path lets Vite dev server proxy handle the routing
   headers: { "Content-Type": "application/json" },
 });
 
-export default api;
-
-// Case Management API
+// Case Management APIs
 export const getAllCases = async () => {
   try {
-    const response = await api.get("/cases");
+    const response = await api.get("/api/cases");
     return response.data;
   } catch (error) {
     console.error("Error fetching all cases:", error);
@@ -22,7 +18,7 @@ export const getAllCases = async () => {
 
 export const createCase = async (caseData) => {
   try {
-    const response = await api.post("/cases", caseData);
+    const response = await api.post("/api/cases", caseData);
     return response.data;
   } catch (error) {
     console.error("Error creating case:", error);
@@ -32,7 +28,7 @@ export const createCase = async (caseData) => {
 
 export const getTodayCases = async () => {
   try {
-    const response = await api.get("/cases/today");
+    const response = await api.get("/api/cases/today");
     return response.data;
   } catch (error) {
     console.error("Error fetching today's cases:", error);
@@ -42,7 +38,7 @@ export const getTodayCases = async () => {
 
 export const getUpcomingCases = async () => {
   try {
-    const response = await api.get("/cases/upcoming");
+    const response = await api.get("/api/cases/upcoming");
     return response.data;
   } catch (error) {
     console.error("Error fetching upcoming cases:", error);
@@ -52,7 +48,7 @@ export const getUpcomingCases = async () => {
 
 export const getCaseTypes = async () => {
   try {
-    const response = await api.get("/cases/types");
+    const response = await api.get("/api/cases/types");
     return response.data;
   } catch (error) {
     console.error("Error fetching case types:", error);
@@ -62,7 +58,7 @@ export const getCaseTypes = async () => {
 
 export const getCaseDetails = async (caseId) => {
   try {
-    const response = await api.get(`/cases/${caseId}`);
+    const response = await api.get(`/api/cases/${caseId}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching case details:", error);
@@ -70,17 +66,14 @@ export const getCaseDetails = async (caseId) => {
   }
 };
 
-// Document Management (list,upload,delete) APIs
-export const uploadDocument = async (
-  caseId,
-  { file, title, document_type }
-) => {
+// Document APIs
+export const uploadDocument = async (caseId, { file, title, document_type }) => {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("title", title);
   formData.append("document_type", document_type);
   try {
-    const response = await api.post(`/cases/${caseId}/documents`, formData, {
+    const response = await api.post(`/docs/api/cases/${caseId}/documents`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
     return response.data;
@@ -92,7 +85,7 @@ export const uploadDocument = async (
 
 export const getDocuments = async (caseId) => {
   try {
-    const response = await api.get(`/cases/${caseId}/documents`);
+    const response = await api.get(`/docs/api/cases/${caseId}/documents`);
     return response.data;
   } catch (error) {
     console.error("Error fetching documents:", error);
@@ -100,10 +93,10 @@ export const getDocuments = async (caseId) => {
   }
 };
 
-// Auth API
+// Auth APIs
 export const loginUser = async (email, password) => {
   try {
-    const response = await api.post("/login", { email, password });
+    const response = await api.post("/auth/login", { email, password });
     localStorage.setItem("token", response.data.token);
     return response.data.user;
   } catch (error) {
@@ -111,13 +104,13 @@ export const loginUser = async (email, password) => {
   }
 };
 
-export const registerUser = async (email, password, fullName) => {
+export const registerUser = async (registrationData) => {
   try {
-    const response = await api.post("/register", { email, password, fullName });
-    localStorage.setItem("token", response.data.token);
-    return response.data.user;
+    const response = await api.post("/adv/advocates", registrationData);
+    return response.data;
   } catch (error) {
-    throw new Error("Registration failed");
+    console.error("Registration failed:", error.response?.data?.message || error.message);
+    throw new Error(error.response?.data?.message || "Registration failed");
   }
 };
 
@@ -125,7 +118,7 @@ export const getProfile = async () => {
   try {
     const token = localStorage.getItem("token");
     if (!token) throw new Error("No token found");
-    const response = await api.get("/profile", {
+    const response = await api.get("/auth/profile", {
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
@@ -139,19 +132,9 @@ export const logoutUser = () => {
 };
 
 // Legal Resources
-export const getCaseLaw = async () => {
-  try {
-    const response = await api.get("/resources/case-law");
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching case law:", error);
-    throw error;
-  }
-};
-
 export const searchLegalResources = async (query) => {
   try {
-    const response = await api.get("/resources/case-law", {
+    const response = await api.get("/resources/resources", {
       params: { query },
     });
     return response.data;
@@ -160,9 +143,7 @@ export const searchLegalResources = async (query) => {
   }
 };
 
-// Client Management API
-
-// get all clients
+// Clients API
 export const getAllClients = async () => {
   try {
     const response = await api.get("/clients/clients");
@@ -173,32 +154,29 @@ export const getAllClients = async () => {
   }
 };
 
-// get client details
 export const getClientDetails = async (clientId) => {
   try {
-    const responce = await api.get(`/clients/clients/${clientId}`);
-    return responce.data;
+    const response = await api.get(`/clients/clients/${clientId}`);
+    return response.data;
   } catch (error) {
     console.error("Error fetching client details:", error);
     throw error;
   }
 };
 
-// create client
 export const createClient = async (clientData) => {
   try {
-    const responce = await api.post("/clients/clients", clientData);
-    return responce.data;
+    const response = await api.post("/clients/clients", clientData);
+    return response.data;
   } catch (error) {
     console.error("Error creating client:", error);
     throw error;
   }
 };
 
-// update client
 export const updateClient = async (clientId, clientData) => {
   try {
-    const response = await api.put(`/clients/clients/${clientId}`, clientData); // to change
+    const response = await api.put(`/clients/clients/${clientId}`, clientData);
     return response.data;
   } catch (error) {
     console.error("Error updating client:", error);
@@ -206,10 +184,9 @@ export const updateClient = async (clientId, clientData) => {
   }
 };
 
-// delete client
 export const deleteClient = async (clientId) => {
   try {
-    const response = await api.delete(`/clients/${clientId}`); // to change
+    const response = await api.delete(`/clients/api/clients/${clientId}`);
     return response.data;
   } catch (error) {
     console.error("Error deleting client:", error);
@@ -217,13 +194,14 @@ export const deleteClient = async (clientId) => {
   }
 };
 
-// get clietn cases
 export const getClientCases = async (clientId) => {
   try {
-    const response = await api.get(`/clients/${clientId}/cases`); // to change
+    const response = await api.get(`/clients/${clientId}/cases`);
     return response.data;
   } catch (error) {
     console.error("Error fetching client cases:", error);
     throw error;
   }
 };
+
+export default api;

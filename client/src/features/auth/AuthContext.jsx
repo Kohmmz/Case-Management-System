@@ -7,6 +7,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("user")) || null);
   const [token, setToken] = useState(() => localStorage.getItem("token") || null);
+  const [message, setMessage] = useState(null); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,6 +18,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, [token]);
 
+  // Rest of your AuthContext code remains the same...
   const login = async (formData) => {
     try {
       const res = await axios.post("/auth/login", formData);
@@ -26,19 +28,19 @@ export const AuthProvider = ({ children }) => {
         setToken(res.data.access_token);
         localStorage.setItem("user", JSON.stringify(userData));
         localStorage.setItem("token", res.data.access_token);
+        setMessage({ type: "success", text: "Login successful!" });
         navigate("/dashboard");
       } else {
-        alert("Login failed: " + res.data.message);
+        setMessage({ type: "error", text: res.data.message || "Login failed." });
       }
     } catch (error) {
       console.error("Login failed:", error.response?.data?.message || error.message);
-      alert("Login failed: " + (error.response?.data?.message || "Please try again."));
+      setMessage({ type: "error", text: error.response?.data?.message || "Login failed. Please try again." });
     }
   };
 
   const register = async (formData) => {
     try {
-      // Transform frontend form data to match backend expectations
       const registrationData = {
         username: formData.username,
         email: formData.email,
@@ -47,27 +49,28 @@ export const AuthProvider = ({ children }) => {
         last_name: formData.last_name,
         bar_number: formData.bar_number,
         phone: formData.phone || "",
-        specialization: formData.specialization || ""
+        specialization: formData.specialization || "",
       };
-      
-      const res = await axios.post("/auth/register", registrationData);
-      if (res.data.success) {
-        alert("Registration successful! Please login.");
+  
+      const res = await axios.post("/adv/advocates", registrationData);
+      if (res.status === 201) {
+        setMessage({ type: "success", text: "Registration successful! Please login." });
         navigate("/login");
       } else {
-        alert("Registration failed: " + res.data.message);
+        setMessage({ type: "error", text: res.data.message || "Registration failed." });
       }
     } catch (error) {
       console.error("Registration failed:", error.response?.data?.message || error.message);
-      alert("Registration failed: " + (error.response?.data?.message || "Please try again."));
+      setMessage({ type: "error", text: error.response?.data?.message || "Registration failed. Please try again." });
     }
   };
-
+  
   const logout = () => {
     setUser(null);
     setToken(null);
     localStorage.removeItem("user");
     localStorage.removeItem("token");
+    setMessage({ type: "info", text: "You have been logged out." });
     navigate("/login");
   };
 
@@ -78,15 +81,15 @@ export const AuthProvider = ({ children }) => {
         const updatedUser = res.data.advocate;
         setUser(updatedUser);
         localStorage.setItem("user", JSON.stringify(updatedUser));
-        alert("Profile updated successfully!");
+        setMessage({ type: "success", text: "Profile updated successfully!" });
         return true;
       } else {
-        alert("Profile update failed: " + res.data.message);
+        setMessage({ type: "error", text: res.data.message || "Profile update failed." });
         return false;
       }
     } catch (error) {
       console.error("Profile update failed:", error.response?.data?.message || error.message);
-      alert("Profile update failed: " + (error.response?.data?.message || "Please try again."));
+      setMessage({ type: "error", text: error.response?.data?.message || "Profile update failed. Please try again." });
       return false;
     }
   };
@@ -120,7 +123,9 @@ export const AuthProvider = ({ children }) => {
       logout, 
       updateProfile,
       checkAuthStatus,
-      isAuthenticated: !!token
+      isAuthenticated: !!token,
+      message, 
+      setMessage 
     }}>
       {children}
     </AuthContext.Provider>
