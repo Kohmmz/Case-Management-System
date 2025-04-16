@@ -6,10 +6,8 @@ name = "pypi"
 [packages]
 flask = "*"
 flask-restful = "*"
-
 flask-sqlalchemy = "*"
 flask-migrate = "*"
-flask-cors = "*"
 flask-bcrypt = "*"
 python-dotenv = "*"
 psycopg2-binary = "*"

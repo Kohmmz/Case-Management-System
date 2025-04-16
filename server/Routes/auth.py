@@ -6,41 +6,6 @@ from Models.advocates import Advocate
 
 auth_bp = Blueprint("auth", __name__)
 
-@auth_bp.route('/login', methods=['POST'])
-def login():
-    data = request.get_json()
-    email = data.get('email')
-    password = data.get('password')
-
-    # Check if fields are missing
-    if not email or not password:
-        return make_response(jsonify({'success': False, 'message': 'Missing required fields'}), 400)
-
-    # Check if user exists
-    advocate = Advocate.query.filter_by(email=email).first()
-    if not advocate or not advocate.check_password(password):
-        return make_response(jsonify({'success': False, 'message': 'Invalid email or password'}), 401)
-
-    # Check if user is active
-    if not advocate.active:
-        return make_response(jsonify({'success': False, 'message': 'Account is inactive'}), 401)
-
-    # Create access token using JWT
-    access_token = create_access_token(identity=advocate.id)
-    return make_response(jsonify({
-        'success': True,
-        'access_token': access_token,
-        'advocate': {
-            'id': advocate.id,
-            'username': advocate.username,
-            'email': advocate.email,
-            'first_name': advocate.first_name,
-            'last_name': advocate.last_name,
-            'role': advocate.role,
-            'bar_number': advocate.bar_number,
-        }
-    }), 200)
-
 @auth_bp.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
@@ -84,6 +49,42 @@ def register():
         'access_token': access_token,
         'advocate': advocate.to_dict()
     }), 201
+
+@auth_bp.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
+
+    # Check if fields are missing
+    if not email or not password:
+        return make_response(jsonify({'success': False, 'message': 'Missing required fields'}), 400)
+
+    # Check if user exists
+    advocate = Advocate.query.filter_by(email=email).first()
+    if not advocate or not advocate.check_password(password):
+        return make_response(jsonify({'success': False, 'message': 'Invalid email or password'}), 401)
+
+    # Check if user is active
+    if not advocate.active:
+        return make_response(jsonify({'success': False, 'message': 'Account is inactive'}), 401)
+
+    # Create access token using JWT
+    access_token = create_access_token(identity=advocate.id)
+    return make_response(jsonify({
+        'success': True,
+        'access_token': access_token,
+        'advocate': {
+            'id': advocate.id,
+            'username': advocate.username,
+            'email': advocate.email,
+            'first_name': advocate.first_name,
+            'last_name': advocate.last_name,
+            'role': advocate.role,
+            'bar_number': advocate.bar_number,
+        }
+    }), 200)
+
 
 @auth_bp.route('/profile', methods=['GET'])
 @jwt_required()
