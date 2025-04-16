@@ -21,12 +21,16 @@ const AdvocateForm = () => {
   const [error, setError] = useState(null);
 
   const formik = useFormik({
-    initialValues: { name: "", email: "", bar_number: "", phone: "" },
+    initialValues: { username: "", email: "", bar_number: "", phone: "" , password: "", first_name: "", last_name: ""},
     validationSchema: Yup.object({
-      name: Yup.string().required("Name is required"),
+      username: Yup.string().required("Username is required"),
+      // name: Yup.string().required("Name is required"),
       email: Yup.string().email("Invalid email format").required("Email is required"),
       bar_number: Yup.string().required("Bar Number is required"),
       phone: Yup.string().required("Phone number is required"),
+      password: Yup.string().required("Password is required"),
+      first_name: Yup.string().required("First Name is required"),
+      last_name: Yup.string().required("Last Name is required"),
     }),
     onSubmit: async (values) => {
       try {
@@ -107,7 +111,40 @@ const AdvocateForm = () => {
         )}
         
         <form onSubmit={formik.handleSubmit} className="space-y-6">
-          {/* Name */}
+          {/* Username */}
+          <div>
+            <label htmlFor="username" className="block text-sm font-medium text-slate-700 mb-1">
+              Username <span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <UserIcon className="h-5 w-5 text-slate-400" />
+              </div>
+              <input
+                id="username"
+                name="username"
+                placeholder="Enter advocate's username"
+                value={formik.values.username}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                className={`w-full pl-10 pr-3 py-3 border ${
+                  formik.errors.username && formik.touched.username 
+                    ? "border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500" 
+                    : "border-slate-300 focus:ring-blue-500 focus:border-blue-500"
+                } rounded-lg shadow-sm focus:outline-none focus:ring-2`}
+                disabled={loading}
+              />
+              {formik.errors.username && formik.touched.username && (
+                <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                  <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
+                </div>
+              )}
+            </div>
+            {formik.errors.username && formik.touched.username && (
+              <p className="mt-1 text-sm text-red-600">{formik.errors.username}</p>
+            )}
+          </div>
+          {/* Name
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1">
               Full Name <span className="text-red-500">*</span>
@@ -138,6 +175,79 @@ const AdvocateForm = () => {
             </div>
             {formik.errors.name && formik.touched.name && (
               <p className="mt-1 text-sm text-red-600">{formik.errors.name}</p>
+            )}
+          </div> */}
+
+          {/* First Name */}
+          <div>
+            <label htmlFor="first_name" className="block text-sm font-medium text-slate-700 mb-1">
+              First Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              id="first_name"
+              name="first_name"
+              placeholder="Enter advocate's first name"
+              value={formik.values.first_name}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className={`w-full pl-3 pr-3 py-3 border ${
+                formik.errors.first_name && formik.touched.first_name 
+                  ? "border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500" 
+                  : "border-slate-300 focus:ring-blue-500 focus:border-blue-500"
+              } rounded-lg shadow-sm focus:outline-none focus:ring-2`}
+              disabled={loading}
+            />
+            {formik.errors.first_name && formik.touched.first_name && (
+              <p className="mt-1 text-sm text-red-600">{formik.errors.first_name}</p>
+            )}
+          </div>
+
+          {/* Last Name */}
+          <div>
+            <label htmlFor="last_name" className="block text-sm font-medium text-slate-700 mb-1">
+              Last Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              id="last_name"
+              name="last_name"
+              placeholder="Enter advocate's last name"
+              value={formik.values.last_name}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className={`w-full pl-3 pr-3 py-3 border ${
+                formik.errors.last_name && formik.touched.last_name 
+                  ? "border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500" 
+                  : "border-slate-300 focus:ring-blue-500 focus:border-blue-500"
+              } rounded-lg shadow-sm focus:outline-none focus:ring-2`}
+              disabled={loading}
+            />
+            {formik.errors.last_name && formik.touched.last_name && (
+              <p className="mt-1 text-sm text-red-600">{formik.errors.last_name}</p>
+            )}
+          </div>
+
+          {/* Password */}
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1">
+              Password <span className="text-red-500">*</span>
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Enter advocate's password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className={`w-full pl-3 pr-3 py-3 border ${
+                formik.errors.password && formik.touched.password 
+                  ? "border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500" 
+                  : "border-slate-300 focus:ring-blue-500 focus:border-blue-500"
+              } rounded-lg shadow-sm focus:outline-none focus:ring-2`}
+              disabled={loading}
+            />
+            {formik.errors.password && formik.touched.password && (
+              <p className="mt-1 text-sm text-red-600">{formik.errors.password}</p>
             )}
           </div>
 

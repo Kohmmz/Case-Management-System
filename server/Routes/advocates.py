@@ -104,34 +104,3 @@ def unassign_advocate(case_id, advocate_id):
 
     return jsonify({'success': True, 'message': 'Advocate unassigned'})
 
-
-# @advocates_bp.route('/register', methods=['POST'])
-# def register():
-#     """Register a new advocate"""
-#     data = request.get_json()
-#     required = ['username', 'email', 'password', 'first_name', 'last_name']
-#     for field in required:
-#         if not data.get(field):
-#             return jsonify({'success': False, 'message': f'Missing: {field}'}), 400
-
-#     if Advocate.query.filter_by(username=data['username']).first():
-#         return jsonify({'success': False, 'message': 'Username taken'}), 400
-#     if Advocate.query.filter_by(email=data['email']).first():
-#         return jsonify({'success': False, 'message': 'Email registered'}), 400
-
-#     advocate = Advocate(
-#         username=data['username'],
-#         email=data['email'],
-#         first_name=data['first_name'],
-#         last_name=data['last_name'],
-#         phone=data.get('phone', ''),
-#         role=data.get('role', 'advocate'),
-#         specialization=data.get('specialization', ''),
-#         bar_number=data.get('bar_number', ''),
-#         active=data.get('active', True)
-#     )
-#     advocate.set_password(data['password'])
-#     db.session.add(advocate)
-#     db.session.commit()
-
-#     return jsonify({'success': True, 'message': 'Registration successful', 'advocate': advocate.to_dict()}), 201

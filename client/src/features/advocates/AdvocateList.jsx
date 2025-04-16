@@ -123,7 +123,7 @@ const AdvocateList = () => {
                         key={advocate.id} 
                         className="hover:bg-slate-50 transition-colors"
                       >
-                        <td className="px-6 py-4 font-medium text-slate-900">{advocate.name}</td>
+                        <td className="px-6 py-4 font-medium text-slate-900">{`${advocate.first_name} ${advocate.last_name}`}</td>
                         <td className="px-6 py-4 text-slate-600">{advocate.bar_number}</td>
                         <td className="px-6 py-4 text-slate-600">{advocate.email}</td>
                         <td className="px-6 py-4 text-slate-600">{advocate.phone}</td>

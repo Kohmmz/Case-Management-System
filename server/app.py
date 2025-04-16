@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
@@ -14,7 +14,7 @@ cors = CORS()
 jwt = JWTManager()
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder="../client/dist", static_url_path="/")
 
     # Configure the Flask app
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
@@ -47,8 +47,19 @@ def create_app():
     app.register_blueprint(documents_bp, url_prefix='/docs')
 
     @app.route("/")
-    def home():
-        return {"message": "Welcome to the Case Management System!"}
+    # Serve React app for undefined routes
+    @app.route("/", defaults={"path": ""})
+    @app.route("/<path:path>")
+    def serve_react_app(path):
+        # Serve the React app for all routes except API routes
+        if path != "" and not path.startswith(("auth", "api", "clients", "adv", "docs", "resources")):
+            return send_from_directory(app.static_folder, "index.html")
+        return "Not Found", 404
+
+    # Example API route
+    @app.route("/api/example", methods=["GET"])
+    def example_api():
+        return {"message": "This is an example API route"}
 
     return app
 
